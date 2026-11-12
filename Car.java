@@ -3,18 +3,15 @@ import java.awt.*;
 
 public abstract class Car implements Movable {
 
-    
     private int nrDoors;
     private double enginePower;
     private double currentSpeed;
     private Color color;
     private String modelName;
 
-    
     private double x = 0;
     private double y = 0;
 
-    
     private int direction = 0;
 
     public Car(int nrDoors, double enginePower, Color color, String modelName) {
@@ -62,7 +59,7 @@ public abstract class Car implements Movable {
     }
 
     public void startEngine() {
-        currentSpeed = 0.1;
+        currentSpeed = Math.min(0.1, enginePower);
     }
 
     public void stopEngine() {
@@ -71,12 +68,30 @@ public abstract class Car implements Movable {
 
     protected abstract double speedFactor();
 
+    private void checkAmount(double amount) {
+        if (!Double.isFinite(amount) || amount < 0 || amount > 1) {
+            throw new IllegalArgumentException(
+                "Amount must be between 0 and 1"
+            );
+        }
+    }
+
     public void incrementSpeed(double amount) {
-        currentSpeed = getCurrentSpeed() + speedFactor() * amount;
+        checkAmount(amount);
+
+        currentSpeed = Math.min(
+            enginePower,
+            currentSpeed + speedFactor() * amount
+        );
     }
 
     public void decrementSpeed(double amount) {
-        currentSpeed = getCurrentSpeed() - speedFactor() * amount;
+        checkAmount(amount);
+
+        currentSpeed = Math.max(
+            0,
+            currentSpeed - speedFactor() * amount
+        );
     }
 
     public void gas(double amount) {
