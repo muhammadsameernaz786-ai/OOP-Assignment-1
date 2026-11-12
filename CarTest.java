@@ -36,10 +36,23 @@ public class CarTest {
     reportResult("Engine starts correctly", result);
 }
 
+private static void testStopEngine() {
+
+    Saab saab = new Saab();
+
+    saab.startEngine();
+    saab.stopEngine();
+
+    boolean result = saab.getCurrentSpeed() == 0;
+
+    reportResult("Engine stops correctly", result);
+}
+
     public static void main(String[] args) {
 
         testTurbo();
         testStartEngine();
+        testStopEngine();
 
     }
 }
