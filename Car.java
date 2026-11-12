@@ -3,21 +3,20 @@ import java.awt.*;
 
 public abstract class Car implements Movable {
 
-    // Common car attributes
+    
     private int nrDoors;
     private double enginePower;
     private double currentSpeed;
     private Color color;
     private String modelName;
 
-    // Car position
+    
     private double x = 0;
     private double y = 0;
 
-    // Direction: 0 = North, 1 = East, 2 = South, 3 = West
+    
     private int direction = 0;
 
-    // Constructor
     public Car(int nrDoors, double enginePower, Color color, String modelName) {
         this.nrDoors = nrDoors;
         this.enginePower = enginePower;
@@ -26,7 +25,6 @@ public abstract class Car implements Movable {
         stopEngine();
     }
 
-    // Getters and setter
     public int getNrDoors() {
         return nrDoors;
     }
@@ -51,7 +49,6 @@ public abstract class Car implements Movable {
         return modelName;
     }
 
-    // Position getters
     public double getX() {
         return x;
     }
@@ -64,7 +61,6 @@ public abstract class Car implements Movable {
         return direction;
     }
 
-    // Engine methods
     public void startEngine() {
         currentSpeed = 0.1;
     }
@@ -73,7 +69,6 @@ public abstract class Car implements Movable {
         currentSpeed = 0;
     }
 
-    // Speed calculation
     protected abstract double speedFactor();
 
     public void incrementSpeed(double amount) {
@@ -92,7 +87,6 @@ public abstract class Car implements Movable {
         decrementSpeed(amount);
     }
 
-    // Movement method
     @Override
     public void move() {
         if (direction == 0) {
@@ -106,7 +100,6 @@ public abstract class Car implements Movable {
         }
     }
 
-    // Turning methods
     @Override
     public void turnLeft() {
         direction = (direction + 3) % 4;
