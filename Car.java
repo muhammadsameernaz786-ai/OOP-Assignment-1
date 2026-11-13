@@ -3,24 +3,15 @@ import java.awt.*;
 
 public abstract class Car implements Movable {
 
-    private int nrDoors;
-    private double enginePower;
+    public int nrDoors;
+    public double enginePower;
     private double currentSpeed;
-    private Color color;
-    private String modelName;
-
     private double x = 0;
     private double y = 0;
-
     private int direction = 0;
+    public Color color;
+    public String modelName;
 
-    public Car(int nrDoors, double enginePower, Color color, String modelName) {
-        this.nrDoors = nrDoors;
-        this.enginePower = enginePower;
-        this.color = color;
-        this.modelName = modelName;
-        stopEngine();
-    }
 
     public int getNrDoors() {
         return nrDoors;
@@ -42,22 +33,6 @@ public abstract class Car implements Movable {
         color = clr;
     }
 
-    public String getModelName() {
-        return modelName;
-    }
-
-    public double getX() {
-        return x;
-    }
-
-    public double getY() {
-        return y;
-    }
-
-    public int getDirection() {
-        return direction;
-    }
-
     public void startEngine() {
         currentSpeed = Math.min(0.1, enginePower);
     }
@@ -68,16 +43,8 @@ public abstract class Car implements Movable {
 
     protected abstract double speedFactor();
 
-    private void checkAmount(double amount) {
-        if (!Double.isFinite(amount) || amount < 0 || amount > 1) {
-            throw new IllegalArgumentException(
-                "Amount must be between 0 and 1"
-            );
-        }
-    }
 
-    public void incrementSpeed(double amount) {
-        checkAmount(amount);
+    private void incrementSpeed(double amount) {
 
         currentSpeed = Math.min(
             enginePower,
@@ -85,8 +52,7 @@ public abstract class Car implements Movable {
         );
     }
 
-    public void decrementSpeed(double amount) {
-        checkAmount(amount);
+    private void decrementSpeed(double amount) {
 
         currentSpeed = Math.max(
             0,
@@ -95,11 +61,15 @@ public abstract class Car implements Movable {
     }
 
     public void gas(double amount) {
-        incrementSpeed(amount);
+        if (amount >= 0 && amount <= 1) {
+            incrementSpeed(amount);
+        }
     }
 
     public void brake(double amount) {
-        decrementSpeed(amount);
+        if (amount >= 0 && amount <= 1) {
+            decrementSpeed(amount);
+        }
     }
 
     @Override

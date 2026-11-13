@@ -45,12 +45,9 @@ public class CarTest {
     private static void testGasIncreasesSpeed() {
         Saab saab = new Saab();
         saab.startEngine();
-
         double oldSpeed = saab.getCurrentSpeed();
         saab.gas(0.5);
-
         boolean result = saab.getCurrentSpeed() > oldSpeed;
-
         reportResult("Gas increases speed", result);
     }
 
@@ -58,66 +55,67 @@ public class CarTest {
         Saab saab = new Saab();
         saab.startEngine();
         saab.gas(0.5);
-
         double oldSpeed = saab.getCurrentSpeed();
         saab.brake(0.5);
-
         boolean result = saab.getCurrentSpeed() < oldSpeed;
-
         reportResult("Brake decreases speed", result);
     }
 
     private static void testMaximumSpeed() {
         Saab saab = new Saab();
         saab.startEngine();
-
         for (int i = 0; i < 1000; i++) {
             saab.gas(1);
         }
-
         boolean result =
             saab.getCurrentSpeed() <= saab.getEnginePower();
-
         reportResult("Speed never exceeds engine power", result);
     }
 
     private static void testMinimumSpeed() {
         Saab saab = new Saab();
         saab.startEngine();
-
         for (int i = 0; i < 1000; i++) {
             saab.brake(1);
         }
-
         boolean result = saab.getCurrentSpeed() >= 0;
-
         reportResult("Speed never goes below zero", result);
     }
 
     private static void testInvalidGasAmount() {
-        Saab saab = new Saab();
-        boolean result = false;
-
-        try {
-            saab.gas(1.5);
-        } catch (IllegalArgumentException e) {
-            result = true;
-        }
-
+       Saab saab = new Saab();
+       saab.startEngine();
+       double speedBefore = saab.getCurrentSpeed();
+       saab.gas(1.50);
+       boolean result = speedBefore == saab.getCurrentSpeed();
         reportResult("Gas rejects invalid values", result);
     }
 
     private static void testInvalidBrakeAmount() {
         Saab saab = new Saab();
-        boolean result = false;
-
-        try {
-            saab.brake(-0.5);
-        } catch (IllegalArgumentException e) {
-            result = true;
-        }
-
+        saab.startEngine();
+        saab.gas(0.5);
+        double speedBefore = saab.getCurrentSpeed();
+        saab.brake(1.5);
+        boolean result = speedBefore == saab.getCurrentSpeed();
         reportResult("Brake rejects invalid values", result);
+    }
+    private static void testGasDoesNotDecreaseSpeed() {
+       Volvo volvo = new Volvo();
+       volvo.startEngine();
+       double speedBefore = volvo.getCurrentSpeed();
+       volvo.gas(0.5);
+       boolean result = speedBefore <= volvo.getCurrentSpeed();
+       reportResult("Gas does not decrease speed.", result);
+    }
+    private static void testBrakeDoesNotIncreaseSpeed(){
+        Volvo volvo = new Volvo();
+        volvo.startEngine();
+        volvo.gas(0.5);
+        double speedBefore = volvo.getCurrentSpeed();
+        volvo.brake(0.5);
+        boolean result = speedBefore >= volvo.getCurrentSpeed();
+        reportResult("Brake does not increase speed.", result);
     }
 
     public static void main(String[] args) {
@@ -130,5 +128,7 @@ public class CarTest {
         testMinimumSpeed();
         testInvalidGasAmount();
         testInvalidBrakeAmount();
+        testGasDoesNotDecreaseSpeed();
+        testBrakeDoesNotIncreaseSpeed();
     }
 }
